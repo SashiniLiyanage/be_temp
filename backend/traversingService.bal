@@ -3,6 +3,7 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/sql;
 
+
 isolated function createRandomUUID() returns handle = @java:Method {
     name: "randomUUID",
     'class: "java.util.UUID"
@@ -33,12 +34,17 @@ public isolated function getDataJson(string path, string packName) returns json|
     string? jsonString = java:toString(jsonVar);
 
     if jsonString is string {
-        io:StringReader stringReader = new (jsonString, encoding = "UTF-8");
-        json | error Json = stringReader.readJson();
-        if Json is json {
-            jsonEmpty = check UpdateLicenseID(Json);
-        } else {
-            log:printError("Error in converting to json", Json);
+        if(jsonString === "Exception"){
+            error err = error("Error happended in getJsonString");
+            return err;
+        }else{
+            io:StringReader stringReader = new (jsonString, encoding = "UTF-8");
+            json | error Json = stringReader.readJson();
+            if Json is json {
+                jsonEmpty = check UpdateLicenseID(Json);
+            } else {
+                log:printError("Error in converting to json", Json);
+            }
         }
     } else {
         log:printError("Error: returned jsonString is not in string format", jsonString);

@@ -13,33 +13,54 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import java.time.OffsetDateTime;
+import java.util.Locale;
+import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
+import com.azure.storage.blob.sas.BlobContainerSasPermission;
+
 public class TraversePack {
 
     public static String getName(String product) {
-        String name = new File(product).getName();
-        String extractedName = getDefaultName(name);
-        for (int i = 0; i < name.length(); i++) {
-            if ((name.charAt(i) == '-' | name.charAt(i) == '_') && (Character.isDigit(name.charAt(i + 1)) |
-                    name.charAt(i + 1) == 'S')) {
-                return name.substring(0, i);
+        try{
+            String name = new File(product).getName();
+            String extractedName = getDefaultName(name);
+            for (int i = 0; i < name.length(); i++) {
+                if ((name.charAt(i) == '-' | name.charAt(i) == '_') && (Character.isDigit(name.charAt(i + 1)) |
+                        name.charAt(i + 1) == 'S')) {
+                    return name.substring(0, i);
+                }
             }
+            return extractedName;
+        }catch(Exception e){
+                return "";
         }
-        return extractedName;
     }
+
     public static String getVersion(String product) {
-        String name = new File(product).getName();
-        String extractedVersion = "1.0.0";
+        try{
+            String name = new File(product).getName();
+            String extractedVersion = "1.0.0";
 
-        name = name.replace(".jar", "");
-        name = name.replace(".mar", "");
+            name = name.replace(".jar", "");
+            name = name.replace(".mar", "");
 
-        for (int i = 0; i < name.length(); i++) {
-            if ((name.charAt(i) == '-' | name.charAt(i) == '_') && (Character.isDigit(name.charAt(i + 1)) |
-                    name.charAt(i + 1) == 'S')) {
-                return name.substring(i + 1, name.length());
+            for (int i = 0; i < name.length(); i++) {
+                if ((name.charAt(i) == '-' | name.charAt(i) == '_') && (Character.isDigit(name.charAt(i + 1)) |
+                        name.charAt(i + 1) == 'S')) {
+                    return name.substring(i + 1, name.length());
+                }
             }
+            return extractedVersion;
+        }catch(Exception e){
+            return "";
         }
-        return extractedVersion;
     }
     /**
      * Creates a json string for the pack.
@@ -47,29 +68,35 @@ public class TraversePack {
      * @param path : path to the pack.
      */
     public static String getJsonString(String path, String destinationPath, String fileName) {
-        String jsonString = "";
-        destinationPath = destinationPath + File.separator + path;
-        File destination = new File(destinationPath);
-        destination.mkdir();
-        String source = "./storage/packs/" + path + ".zip";
-        String targetFolder = new File(path).getName();
-        LicenseManagerUtils.unzip(source,destination.getAbsolutePath());
-        File[] files = new File(destination.getAbsolutePath()).listFiles();
-        for (File file : files) {
-            if (file.isDirectory()) {
-                targetFolder = file.getName();
+        try{
+            String jsonString = "";
+            destinationPath = destinationPath + File.separator + path;
+            File destination = new File(destinationPath);
+            destination.mkdir();
+            String source = "/tmp/storage/packs/" + path + ".zip";
+            String targetFolder = new File(path).getName();
+            LicenseManagerUtils.unzip(source,destination.getAbsolutePath());
+            File[] files = new File(destination.getAbsolutePath()).listFiles();
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    targetFolder = file.getName();
+                }
             }
+            path = destination.getAbsolutePath() + File.separator + fileName.replace(".zip","");
+            String packName = getName(fileName.replace(".zip",""));
+            String packVersion = getVersion(fileName.replace(".zip",""));
+            jsonString += "{\"packName\":\"" + packName + "\",\"packVersion\":\"" + packVersion + "\",\"library\":";
+            String uuid = UUID.randomUUID().toString();
+            String tempFolderToHoldJars = new File(path).getParent() + File.separator + uuid;
+            String jsonlibrary = getjsonLiraryString(path, tempFolderToHoldJars);
+            jsonString += jsonlibrary + "}";
+            LicenseManagerUtils.deleteFolder(destinationPath);
+            return jsonString;
+
+        }catch(Exception e){
+            e.printStackTrace();
+            return "Exception";
         }
-        path = destination.getAbsolutePath() + File.separator + fileName.replace(".zip","");
-        String packName = getName(fileName.replace(".zip",""));
-        String packVersion = getVersion(fileName.replace(".zip",""));
-        jsonString += "{\"packName\":\"" + packName + "\",\"packVersion\":\"" + packVersion + "\",\"library\":";
-        String uuid = UUID.randomUUID().toString();
-        String tempFolderToHoldJars = new File(path).getParent() + File.separator + uuid;
-        String jsonlibrary = getjsonLiraryString(path, tempFolderToHoldJars);
-        jsonString += jsonlibrary + "}";
-        LicenseManagerUtils.deleteFolder(destinationPath);
-        return jsonString;
     }
     /**
      * Creates jsonLibraryString for the pack.
@@ -258,4 +285,47 @@ public class TraversePack {
         }
         return string;
     }
+
+    public static String generateSas(String accountName, String tenantId, String clientId, String clientSecret){
+
+        try {
+            String authorityUrl = AzureAuthorityHosts.AZURE_PUBLIC_CLOUD +  tenantId;
+            String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
+
+            ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+                    .authorityHost(authorityUrl)
+                    .tenantId(tenantId)
+                    .clientSecret(clientSecret)
+                    .clientId(clientId)
+                    .build();
+
+
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                        .credential(credential)
+                        .endpoint(endpoint)
+                        .buildClient(); 
+
+            // Get a user delegation key for the Blob service that's valid for 30 days.
+            // You can use the key to generate any number of shared access signatures over the lifetime of the key.
+            OffsetDateTime keyStart = OffsetDateTime.now();
+            OffsetDateTime keyExpiry = OffsetDateTime.now().plusDays(30);
+            
+            UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(keyStart, keyExpiry);
+
+            BlobContainerSasPermission blobContainerSas = new BlobContainerSasPermission();
+            blobContainerSas.setWritePermission(true);
+            BlobServiceSasSignatureValues blobServiceSasSignatureValues = new BlobServiceSasSignatureValues(keyExpiry, blobContainerSas);
+            BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("containerName");
+            if (!blobContainerClient.exists())
+                blobContainerClient.create();
+
+            String sas = blobContainerClient.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+            return sas;
+            
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+        
+    }
+
 }

@@ -1,12 +1,23 @@
 import ballerina/io;
 import ballerina/log;
+import ballerina/jballerina.java;
+
+public isolated function generateSas(handle accountName, handle tenantId, handle clientId, handle clientSecret) returns handle = @java:Method {
+    name: "generateSas",
+    'class: "org.wso2.internal.apps.license.manager.TraversePack"
+} external;
 
 public isolated  function uploadPack(stream<byte[], io:Error?> streamer, string name) returns boolean|error {
 
     string randomName = getRandompackName();
-    check io:fileWriteBlocksFromStream("./storage/packs/" + randomName + ".zip", streamer);
+
+    io:Error? result = io:fileWriteBlocksFromStream("../../tmp/storage/packs/" + randomName + ".zip", streamer);
     check streamer.close();
 
+    if(result is io:Error){
+        return result;
+    }
+   
     boolean updated = addPackStatus(name, randomName);
     if updated {
         return true;

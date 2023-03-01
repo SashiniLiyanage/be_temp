@@ -1,8 +1,5 @@
-target
-
 storage/licenses
 storage/processingPacks
 storage/packs
 
 config.toml
-Dependencies.toml

@@ -170,11 +170,8 @@ public isolated function addNewLibrary(string libName, string libType, json[] li
     string? nameVar = java:toString(getName(java:fromString(_filename)));
     string? versionVar = java:toString(getVersion(java:fromString(_filename)));
      
-    if (nameVar is string) {
+    if (nameVar is string && versionVar is string) {
         _name = nameVar;
-    }
-
-    if (versionVar is string) {
         _version = versionVar;
     }
     
@@ -336,10 +333,14 @@ public isolated  function deletePack(string packName) returns boolean {
     sql:ExecutionResult|error executionResult = mysqlEp->execute(sqlQuery = query);
 
     if(executionResult is sql:ExecutionResult){
-        error? removeResults = file:remove("./storage/packs/" + randomName + ".zip");
+        error? removePack = file:remove("../../tmp/storage/packs/" + randomName + ".zip");
+        error? removeProcessingPack = file:remove("../../tmp/storage/processingPacks/" + randomName);
 
-        if(removeResults is error){
-            log:printError("Error in deleting pack ",removeResults);
+        if(removePack is error){
+            log:printError("Error in deleting pack ",removePack);
+        }
+        if(removeProcessingPack is error){
+            log:printError("Error in deleting processingPack ",removeProcessingPack);
         }
         return true;
 
@@ -371,7 +372,7 @@ public isolated function getPackRandomName(string packName) returns string {
 
 public isolated function getLicenseText(string fileName) returns string|error {
     string text = "";
-    string filePath = "./storage/licenses/" + fileName;
+    string filePath = "../../tmp/storage/licenses/" + fileName;
 
     io:ReadableByteChannel | error readableFieldResult = io:openReadableFile(filePath);
     

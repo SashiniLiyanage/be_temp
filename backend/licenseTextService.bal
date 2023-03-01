@@ -19,7 +19,7 @@ public isolated function generateLicense(json dataset) returns error? {
     string packName = (check dataset.packName).toString();
     string packVersion = (check dataset.packVersion).toString();
     string textFile = packName + "-" + packVersion + ".txt";
-    string licensePath = "./storage/licenses/" + textFile;
+    string licensePath = "../../tmp/storage/licenses/" + textFile;
     
     file:Error? createFileResults = file:create(licensePath);
 

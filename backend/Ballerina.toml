@@ -6,6 +6,7 @@ distribution = "2201.3.1"
 
 [build-options]
 observabilityIncluded = true
+cloud="docker"
 
 [[platform.java11.dependency]]
 groupId = "TraversePack"
@@ -53,3 +54,399 @@ version = "2.2"
 groupId = "junit"
 artifactId = "junit"
 version = "4.13.2"
+
+# transitive dependency of TraversePack:TraversePack:1.0-SNAPSHOT
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-storage-blob"
+version = "12.8.0"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-core"
+version = "1.7.0"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.datatype"
+artifactId = "jackson-datatype-jsr310"
+version = "2.10.1"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.core"
+artifactId = "jackson-annotations"
+version = "2.10.1"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.core"
+artifactId = "jackson-core"
+version = "2.10.1"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.dataformat"
+artifactId = "jackson-dataformat-xml"
+version = "2.10.1"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.module"
+artifactId = "jackson-module-jaxb-annotations"
+version = "2.10.1"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "jakarta.xml.bind"
+artifactId = "jakarta.xml.bind-api"
+version = "2.3.2"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "jakarta.activation"
+artifactId = "jakarta.activation-api"
+version = "1.2.1"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "org.codehaus.woodstox"
+artifactId = "stax2-api"
+version = "4.2"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.woodstox"
+artifactId = "woodstox-core"
+version = "6.0.2"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "org.slf4j"
+artifactId = "slf4j-api"
+version = "1.7.30"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.projectreactor"
+artifactId = "reactor-core"
+version = "3.3.8.RELEASE"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "org.reactivestreams"
+artifactId = "reactive-streams"
+version = "1.0.3"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-tcnative-boringssl-static"
+version = "2.0.31.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-storage-common"
+version = "12.8.0"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-core-http-netty"
+version = "1.5.4"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-handler"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-common"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-resolver"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-handler-proxy"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-socks"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-buffer"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-http"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-http2"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport-native-unix-common"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport-native-epoll"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport-native-kqueue"
+version = "4.1.51.Final"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "io.projectreactor.netty"
+artifactId = "reactor-netty"
+version = "0.9.10.RELEASE"
+
+# transitive dependency of com.azure:azure-storage-blob:12.8.0
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-storage-internal-avro"
+version = "12.0.0"
+
+# transitive dependency of TraversePack:TraversePack:1.0-SNAPSHOT
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-identity"
+version = "1.1.2"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.microsoft.azure"
+artifactId = "msal4j"
+version = "1.6.2"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.core"
+artifactId = "jackson-databind"
+version = "2.10.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.microsoft.azure"
+artifactId = "msal4j-persistence-extension"
+version = "1.0.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "net.java.dev.jna"
+artifactId = "jna"
+version = "5.5.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.nimbusds"
+artifactId = "oauth2-oidc-sdk"
+version = "7.1.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.github.stephenc.jcip"
+artifactId = "jcip-annotations"
+version = "1.0-1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.nimbusds"
+artifactId = "content-type"
+version = "2.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "net.minidev"
+artifactId = "json-smart"
+version = "1.3.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.nimbusds"
+artifactId = "lang-tag"
+version = "1.4.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.nimbusds"
+artifactId = "nimbus-jose-jwt"
+version = "8.8"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.sun.mail"
+artifactId = "javax.mail"
+version = "1.6.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "javax.activation"
+artifactId = "activation"
+version = "1.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.nanohttpd"
+artifactId = "nanohttpd"
+version = "2.3.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "net.java.dev.jna"
+artifactId = "jna-platform"
+version = "5.4.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "KeePassJava2"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "KeePassJava2-kdb"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "database"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.google.guava"
+artifactId = "guava"
+version = "19.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.madgag.spongycastle"
+artifactId = "core"
+version = "1.54.0.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.jetbrains"
+artifactId = "annotations"
+version = "15.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "KeePassJava2-dom"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "KeePassJava2-kdbx"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "commons-codec"
+artifactId = "commons-codec"
+version = "1.10"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "KeePassJava2-jaxb"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.linguafranca.pwdb"
+artifactId = "KeePassJava2-simple"
+version = "2.1.4"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.simpleframework"
+artifactId = "simple-xml"
+version = "2.7.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "stax"
+artifactId = "stax-api"
+version = "1.0.1"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "stax"
+artifactId = "stax"
+version = "1.2.0"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "xpp3"
+artifactId = "xpp3"
+version = "1.1.3.3"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "org.apache.httpcomponents"
+artifactId = "httpcore"
+version = "4.4.5"
+
+# transitive dependency of com.azure:azure-identity:1.1.2
+[[platform.java11.dependency]]
+groupId = "com.fasterxml"
+artifactId = "aalto-xml"
+version = "1.0.0"
+
+# transitive dependency of TraversePack:TraversePack:1.0-SNAPSHOT
+[[platform.java11.dependency]]
+groupId = "org.slf4j"
+artifactId = "slf4j-simple"
+version = "1.7.33"
+
+# transitive dependency of org.slf4j:slf4j-simple:1.7.33
+[[platform.java11.dependency]]
+groupId = "org.slf4j"
+artifactId = "slf4j-api"
+version = "1.7.33"

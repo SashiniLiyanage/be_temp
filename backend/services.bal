@@ -1,7 +1,9 @@
 import ballerinax/mysql;
 import ballerinax/mysql.driver as _;
 import ballerina/http;
+import ballerinax/azure_storage_service.blobs as azure_blobs;
 import ballerina/io;
+import ballerina/jballerina.java;
 
 configurable string DBhost = ?;
 configurable string DBuser = ?;
@@ -15,6 +17,13 @@ configurable string LICENSEHEADER_PATH = ?;
 configurable string GMAIL_RECIPIENT = ?;
 configurable string GMAIL_SENDER = ?;
 configurable string GMAIL_PASSWORD = ?;
+
+configurable string ACCESS_KEY_OR_SAS = ?;
+configurable string ACCOUNT_NAME = ?;
+
+configurable string TENANT_ID = ?;
+configurable string  CLIENT_ID = ?;
+configurable string  CLIENT_SECRETE = ?;
 
 type Success record {|
     *http:Ok;
@@ -40,15 +49,29 @@ final mysql:Client mysqlEp= check new (
     DBport
 );
 
-@http:ServiceConfig {
-    cors: {
-        allowOrigins: ["http://localhost:3000"],
-        allowCredentials: false,
-        allowHeaders: ["*"],
-        allowMethods: ["GET","POST","PUT","OPTIONS","DELETE","PATCH","HEAD"],
-        exposeHeaders: ["Access-Control-Allow-Origin"]
-    }
-}
+final azure_blobs:ConnectionConfig blobServiceConfig = {
+    accessKeyOrSAS: ACCESS_KEY_OR_SAS,
+    accountName: ACCOUNT_NAME,
+    authorizationMethod: "accessKey"
+};
+
+final azure_blobs:BlobClient blobClient = check new (
+    blobServiceConfig
+);
+
+final azure_blobs:ManagementClient managementClient = check new (
+    blobServiceConfig
+);
+
+// @http:ServiceConfig {
+//     cors: {
+//         allowOrigins: ["https://localhost:3000"],
+//         allowCredentials: false,
+//         allowHeaders: ["*"],
+//         allowMethods: ["GET","POST","PUT","OPTIONS","DELETE","PATCH","HEAD"],
+//         exposeHeaders: ["Access-Control-Allow-Origin"]
+//     }
+// }
 
 service /LicenseManager on new http:Listener(9096) {
 
@@ -203,6 +226,15 @@ service /LicenseManager on new http:Listener(9096) {
 
     }
 
+    // resource function post receiver/[string packName](http:Request request) returns error|http:Response {
+
+    //     var bodyParts = check request.getBodyParts();
+    //     http:Response response = new;
+    //     response.setPayload(bodyParts);
+    //     return response;
+            
+    // }
+
     resource function post receiver/[string packName](http:Request request) returns Success|BadRequest|InternalServerError|error {
 
         stream<byte[], io:Error?>|http:ClientError streamer = request.getByteStream();
@@ -216,7 +248,12 @@ service /LicenseManager on new http:Listener(9096) {
                 return res;
             }
             
-            InternalServerError res ={ body:"Server Error"};
+            if(uploaded is error){
+                InternalServerError res ={ body: uploaded.toString()};
+                return res;
+            }
+
+            InternalServerError res ={ body: "Server Error"};
             return res;
 
         }else{
@@ -301,6 +338,43 @@ service /LicenseManager on new http:Listener(9096) {
             InternalServerError res ={ body:"Server Error"};
             return res;
         }
+    }
+
+    resource function get storageData() returns Success|BadRequest|InternalServerError|error {
+         
+        azure_blobs:ListContainerResult result = check blobClient->listContainers();
+        azure_blobs:Container[] containerList = result.containerList;
+
+        if(containerList.length() == 0){
+            _ = check managementClient->createContainer("container-1");
+        }
+
+        result = check blobClient->listContainers();
+
+        Success res ={
+            body: result.toJsonString()
+        };
+
+        return res;
+        
+    }
+
+    resource function get sastoken() returns Success|BadRequest|InternalServerError|error {
+         
+        var result = generateSas(java:fromString(ACCOUNT_NAME), java:fromString(TENANT_ID), java:fromString(CLIENT_ID), java:fromString(CLIENT_SECRETE));
+        string? sas = java:toString(result);
+
+        if(sas is string){
+            Success res ={
+                body: sas
+            };
+            return res;
+        }
+        
+        InternalServerError res ={ body:"Server Error"};
+        return res;
+        
+        
     }
 
 }
