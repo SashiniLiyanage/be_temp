@@ -2,7 +2,7 @@ import ballerina/io;
 import ballerina/log;
 import ballerina/jballerina.java;
 
-public isolated function generateSas(handle accountName, handle tenantId, handle clientId, handle clientSecret) returns handle = @java:Method {
+public isolated function generateSas(handle accountName, handle accountKey) returns handle = @java:Method {
     name: "generateSas",
     'class: "org.wso2.internal.apps.license.manager.TraversePack"
 } external;

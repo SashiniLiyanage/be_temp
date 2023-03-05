@@ -361,7 +361,7 @@ service /LicenseManager on new http:Listener(9096) {
 
     resource function get sastoken() returns Success|BadRequest|InternalServerError|error {
          
-        var result = generateSas(java:fromString(ACCOUNT_NAME), java:fromString(TENANT_ID), java:fromString(CLIENT_ID), java:fromString(CLIENT_SECRETE));
+        var result = generateSas(java:fromString(ACCOUNT_NAME), java:fromString(ACCESS_KEY_OR_SAS));
         string? sas = java:toString(result);
 
         if(sas is string){

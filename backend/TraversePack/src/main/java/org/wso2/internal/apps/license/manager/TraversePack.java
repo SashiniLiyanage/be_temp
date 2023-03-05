@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Stack;
 import java.util.UUID;
@@ -13,17 +15,12 @@ import java.util.jar.Manifest;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import java.time.OffsetDateTime;
-import java.util.Locale;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.models.UserDelegationKey;
-import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.blob.sas.BlobContainerSasPermission;
+import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
 
 public class TraversePack {
 
@@ -74,14 +71,7 @@ public class TraversePack {
             File destination = new File(destinationPath);
             destination.mkdir();
             String source = "/tmp/storage/packs/" + path + ".zip";
-            String targetFolder = new File(path).getName();
             LicenseManagerUtils.unzip(source,destination.getAbsolutePath());
-            File[] files = new File(destination.getAbsolutePath()).listFiles();
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    targetFolder = file.getName();
-                }
-            }
             path = destination.getAbsolutePath() + File.separator + fileName.replace(".zip","");
             String packName = getName(fileName.replace(".zip",""));
             String packVersion = getVersion(fileName.replace(".zip",""));
@@ -286,46 +276,83 @@ public class TraversePack {
         return string;
     }
 
-    public static String generateSas(String accountName, String tenantId, String clientId, String clientSecret){
+    // public static String generateSas(String accountName, String tenantId, String clientId, String clientSecret){
 
-        try {
-            String authorityUrl = AzureAuthorityHosts.AZURE_PUBLIC_CLOUD +  tenantId;
-            String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
+    //     try {
+    //         String authorityUrl = AzureAuthorityHosts.AZURE_PUBLIC_CLOUD +  tenantId;
+    //         String endpoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName);
 
-            ClientSecretCredential credential = new ClientSecretCredentialBuilder()
-                    .authorityHost(authorityUrl)
-                    .tenantId(tenantId)
-                    .clientSecret(clientSecret)
-                    .clientId(clientId)
-                    .build();
+    //         ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+    //                 .authorityHost(authorityUrl)
+    //                 .tenantId(tenantId)
+    //                 .clientSecret(clientSecret)
+    //                 .clientId(clientId)
+    //                 .build();
 
 
-            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-                        .credential(credential)
-                        .endpoint(endpoint)
-                        .buildClient(); 
+    //         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+    //                     .credential(credential)
+    //                     .endpoint(endpoint)
+    //                     .buildClient(); 
 
-            // Get a user delegation key for the Blob service that's valid for 30 days.
-            // You can use the key to generate any number of shared access signatures over the lifetime of the key.
-            OffsetDateTime keyStart = OffsetDateTime.now();
-            OffsetDateTime keyExpiry = OffsetDateTime.now().plusDays(30);
+    //         // Get a user delegation key for the Blob service that's valid for 30 days.
+    //         // You can use the key to generate any number of shared access signatures over the lifetime of the key.
+    //         OffsetDateTime keyStart = OffsetDateTime.now();
+    //         OffsetDateTime keyExpiry = OffsetDateTime.now().plusDays(30);
             
-            UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(keyStart, keyExpiry);
+    //         UserDelegationKey userDelegationKey = blobServiceClient.getUserDelegationKey(keyStart, keyExpiry);
 
-            BlobContainerSasPermission blobContainerSas = new BlobContainerSasPermission();
-            blobContainerSas.setWritePermission(true);
-            BlobServiceSasSignatureValues blobServiceSasSignatureValues = new BlobServiceSasSignatureValues(keyExpiry, blobContainerSas);
-            BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("containerName");
-            if (!blobContainerClient.exists())
-                blobContainerClient.create();
+    //         BlobContainerSasPermission blobContainerSas = new BlobContainerSasPermission();
+    //         blobContainerSas.setWritePermission(true);
+    //         BlobServiceSasSignatureValues blobServiceSasSignatureValues = new BlobServiceSasSignatureValues(keyExpiry, blobContainerSas);
+    //         BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient("containerName");
+    //         if (!blobContainerClient.exists())
+    //             blobContainerClient.create();
 
-            String sas = blobContainerClient.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
-            return sas;
+    //         String sas = blobContainerClient.generateUserDelegationSas(blobServiceSasSignatureValues, userDelegationKey);
+    //         return sas;
             
-        } catch (Exception e) {
-            return e.getMessage();
-        }
+    //     } catch (Exception e) {
+    //         return e.getMessage();
+    //     }
         
+    // }
+    public static String generateSas(String accountName, String accountKey){
+    try {
+        String containerName = "<your-container-name>";
+        String blobName = "<your-blob-name>";
+        Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // Set the expiration time to one hour from now
+
+         // Create a CloudStorageAccount object using the account name and key
+         StorageCredentialsAccountAndKey credentials = new StorageCredentialsAccountAndKey(accountName, accountKey);
+         CloudStorageAccount account = new CloudStorageAccount(credentials, true);
+
+         // Create a CloudBlobClient object using the CloudStorageAccount object
+         CloudBlobClient blobClient = account.createCloudBlobClient();
+
+         // Get a reference to the container
+         CloudBlobContainer container = blobClient.getContainerReference(containerName);
+
+         // Create a SharedAccessBlobPolicy object
+         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ)); // Set the permission to read
+         policy.setSharedAccessExpiryTime(expirationTime); // Set the expiration time
+
+         // Generate the SAS token for the blob
+         String sasToken = container.generateSharedAccessSignature(policy, null); // null indicates the blob name is not required
+
+         // Construct the URL for the blob including the SAS token
+         String blobUrlWithSasToken = container.getUri() + "/" + blobName + "?" + sasToken;
+
+         System.out.println("SAS token for " + containerName + "/" + blobName + " is: " + sasToken);
+         System.out.println("Blob URL with SAS token is: " + blobUrlWithSasToken);
+         return blobUrlWithSasToken;
+         
+    } catch (Exception e) {
+        e.printStackTrace();
+        return "";
+    }
+      
     }
 
 }

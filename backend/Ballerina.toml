@@ -450,3 +450,189 @@ version = "1.7.33"
 groupId = "org.slf4j"
 artifactId = "slf4j-api"
 version = "1.7.33"
+
+# transitive dependency of TraversePack:TraversePack:1.0-SNAPSHOT
+[[platform.java11.dependency]]
+groupId = "com.microsoft.azure"
+artifactId = "azure-storage"
+version = "8.6.6"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "com.fasterxml.jackson.core"
+artifactId = "jackson-core"
+version = "2.9.4"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "org.slf4j"
+artifactId = "slf4j-api"
+version = "1.7.12"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "org.apache.commons"
+artifactId = "commons-lang3"
+version = "3.4"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "com.microsoft.azure"
+artifactId = "azure-keyvault-core"
+version = "1.2.4"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "com.google.guava"
+artifactId = "guava"
+version = "24.1.1-jre"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "com.google.code.findbugs"
+artifactId = "jsr305"
+version = "1.3.9"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "org.checkerframework"
+artifactId = "checker-compat-qual"
+version = "2.0.0"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "com.google.errorprone"
+artifactId = "error_prone_annotations"
+version = "2.1.3"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "com.google.j2objc"
+artifactId = "j2objc-annotations"
+version = "1.1"
+
+# transitive dependency of com.microsoft.azure:azure-storage:8.6.6
+[[platform.java11.dependency]]
+groupId = "org.codehaus.mojo"
+artifactId = "animal-sniffer-annotations"
+version = "1.14"
+
+# transitive dependency of TraversePack:TraversePack:1.0-SNAPSHOT
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-storage-common"
+version = "12.14.0"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "com.azure"
+artifactId = "azure-core-http-netty"
+version = "1.11.1"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-handler"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-common"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-resolver"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-handler-proxy"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-socks"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-buffer"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-http"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-http2"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport-native-unix-common"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport-native-epoll"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-transport-native-kqueue"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.projectreactor.netty"
+artifactId = "reactor-netty-http"
+version = "1.0.11"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-resolver-dns"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-codec-dns"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.netty"
+artifactId = "netty-resolver-dns-native-macos"
+version = "4.1.68.Final"
+
+# transitive dependency of com.azure:azure-storage-common:12.14.0
+[[platform.java11.dependency]]
+groupId = "io.projectreactor.netty"
+artifactId = "reactor-netty-core"
+version = "1.0.11"
