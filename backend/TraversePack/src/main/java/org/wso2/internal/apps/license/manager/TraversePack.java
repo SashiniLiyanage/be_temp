@@ -364,7 +364,9 @@ public class TraversePack {
         CloudStorageAccount account = CloudStorageAccount.parse(connectionString);
 
         SharedAccessAccountPolicy policy = new SharedAccessAccountPolicy();
-        policy.setPermissionsFromString("rwdlacup"); // Set the permissions you want for the SAS token
+        policy.setServiceFromString("btqf");
+        policy.setResourceTypeFromString("sco"); // Set the permissions you want for the SAS token
+        policy.setPermissionsFromString("rwdlacupi"); // Set the permissions you want for the SAS token
         policy.setSharedAccessStartTime(new Date(System.currentTimeMillis() - 10000)); // Set the start time for the SAS token
         policy.setSharedAccessExpiryTime(new Date(System.currentTimeMillis() + 3600000)); // Set the expiry time for the SAS token
         String sasToken = account.generateSharedAccessSignature(policy);
