@@ -16,6 +16,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
+import com.microsoft.azure.storage.SharedAccessAccountPolicy;
 import com.microsoft.azure.storage.StorageCredentialsAccountAndKey;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
@@ -317,36 +318,57 @@ public class TraversePack {
     //     }
         
     // }
+    
+    // public static String generateSas(String accountName, String accountKey){
+    // try {
+    //     String containerName = "container-1";
+    //     String blobName = "blobname";
+    //     Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // Set the expiration time to one hour from now
+
+    //      // Create a CloudStorageAccount object using the account name and key
+    //      StorageCredentialsAccountAndKey credentials = new StorageCredentialsAccountAndKey(accountName, accountKey);
+    //      CloudStorageAccount account = new CloudStorageAccount(credentials, true);
+
+    //      // Create a CloudBlobClient object using the CloudStorageAccount object
+    //      CloudBlobClient blobClient = account.createCloudBlobClient();
+
+    //      // Get a reference to the container
+    //      CloudBlobContainer container = blobClient.getContainerReference(containerName);
+
+    //      // Create a SharedAccessBlobPolicy object
+    //      SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
+    //      policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ)); // Set the permission to read
+    //      policy.setSharedAccessExpiryTime(expirationTime); // Set the expiration time
+
+    //      // Generate the SAS token for the blob
+    //      String sasToken = container.generateSharedAccessSignature(policy, null); // null indicates the blob name is not required
+
+    //      // Construct the URL for the blob including the SAS token
+    //      String blobUrlWithSasToken = container.getUri() + "/" + blobName + "?" + sasToken;
+
+    //      System.out.println("SAS token for " + containerName + "/" + blobName + " is: " + sasToken);
+    //      System.out.println("Blob URL with SAS token is: " + blobUrlWithSasToken);
+    //      return blobUrlWithSasToken;
+         
+    // } catch (Exception e) {
+    //     e.printStackTrace();
+    //     return "";
+    // }
+      
+    // }
+
+    
     public static String generateSas(String accountName, String accountKey){
     try {
-        String containerName = "<your-container-name>";
-        String blobName = "<your-blob-name>";
-        Date expirationTime = new Date(System.currentTimeMillis() + 3600 * 1000); // Set the expiration time to one hour from now
+        String connectionString = String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;", accountName, accountKey);
+        CloudStorageAccount account = CloudStorageAccount.parse(connectionString);
 
-         // Create a CloudStorageAccount object using the account name and key
-         StorageCredentialsAccountAndKey credentials = new StorageCredentialsAccountAndKey(accountName, accountKey);
-         CloudStorageAccount account = new CloudStorageAccount(credentials, true);
-
-         // Create a CloudBlobClient object using the CloudStorageAccount object
-         CloudBlobClient blobClient = account.createCloudBlobClient();
-
-         // Get a reference to the container
-         CloudBlobContainer container = blobClient.getContainerReference(containerName);
-
-         // Create a SharedAccessBlobPolicy object
-         SharedAccessBlobPolicy policy = new SharedAccessBlobPolicy();
-         policy.setPermissions(EnumSet.of(SharedAccessBlobPermissions.READ)); // Set the permission to read
-         policy.setSharedAccessExpiryTime(expirationTime); // Set the expiration time
-
-         // Generate the SAS token for the blob
-         String sasToken = container.generateSharedAccessSignature(policy, null); // null indicates the blob name is not required
-
-         // Construct the URL for the blob including the SAS token
-         String blobUrlWithSasToken = container.getUri() + "/" + blobName + "?" + sasToken;
-
-         System.out.println("SAS token for " + containerName + "/" + blobName + " is: " + sasToken);
-         System.out.println("Blob URL with SAS token is: " + blobUrlWithSasToken);
-         return blobUrlWithSasToken;
+        SharedAccessAccountPolicy policy = new SharedAccessAccountPolicy();
+        policy.setPermissionsFromString("rwdlacup"); // Set the permissions you want for the SAS token
+        policy.setSharedAccessStartTime(new Date(System.currentTimeMillis() - 10000)); // Set the start time for the SAS token
+        policy.setSharedAccessExpiryTime(new Date(System.currentTimeMillis() + 3600000)); // Set the expiry time for the SAS token
+        String sasToken = account.generateSharedAccessSignature(policy);
+        return sasToken;
          
     } catch (Exception e) {
         e.printStackTrace();
@@ -354,5 +376,5 @@ public class TraversePack {
     }
       
     }
-
+   
 }
